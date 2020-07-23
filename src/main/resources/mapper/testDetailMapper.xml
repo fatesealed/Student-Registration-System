@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzs.st.dao.TestDetailDaoImpl">
+
+    <!--根据考试科目id查询考试省份，城市，地点列表-->
+    <select id="selectExamcourseAddr" parameterType="String" resultType="com.wzs.st.entity.TestDetailEntity">
+  select examIdX,examId,province,city,examAdd from examdetails where examId=#{examId}
+</select>
+
+    <!--根据考试科目id，省份，城市，地点查询考试时间段-->
+    <select id="selectExamcourseTime" parameterType="com.wzs.st.entity.TestDetailEntity"
+            resultType="com.wzs.st.entity.TestDetailEntity">
+  select examIdX,examId,examSDateTime,examEDateTime from examdetails
+  where examId=#{examId} and province=#{province} and city=#{city} and examAdd=#{examAdd}
+</select>
+</mapper>

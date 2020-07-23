@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/><!--JDBC事务-->
+            <!--
+             数据库连接方式：
+             单链接：每次使用数据库，则单独创建一个数据库连接对象；
+             数据库连接池：数据库端提前创建好一定数量的数据库连接对象；数据库的并发
+            -->
+            <dataSource type="POOLED"><!--配置数据源-->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/exam?serverTimezone=GMT"/>
+                <property name="username" value="root"/>
+                <property name="password" value="376931"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/stuuserinfoMapper.xml"/>
+        <mapper resource="mapper/stuDetailInfoMapper.xml"/>
+        <mapper resource="mapper/testSubjectMapper.xml"/>
+        <mapper resource="mapper/testDetailMapper.xml"/>
+    </mappers>
+</configuration>

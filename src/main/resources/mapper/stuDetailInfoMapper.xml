@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzs.st.dao.StuDetailInfDaoImpl">
+
+    <select id="selectStuDetailInfById" parameterType="java.lang.String"
+            resultType="com.wzs.st.entity.StuDetailInfEntity">
+    select stuUserId,stuId,stuName,stuSex,stuTel,stuBirth ,stuIdNum, stuEmail ,stuPicName,stuPicUrl
+from stubasicinfo where stuId=#{stuId}
+  </select>
+</mapper>
