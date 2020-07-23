@@ -15,7 +15,6 @@ import java.util.List;
 public class StudentExamServiceImpl implements StudentExamService{
     @Override
     public List<TestDetailEntity> selectExamcourseAddr(String examId) {
-        //System.out.println("111");
         TestDetailDao dao=new TestDetailDaoImpl();
         List<TestDetailEntity> list=dao.selectExamcourseAddr(examId);
         return list;
