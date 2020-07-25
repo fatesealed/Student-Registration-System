@@ -116,9 +116,8 @@
         <caption><h2>考生报名</h2></caption>
         <tr>
             <td width="20%" class="tableleft" colspan="2" style="text-align: right; font-size:13px;padding-right:50px;">
-                <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a href="#">[退出]</a></span>
+                <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a href="page/st/stLogin.jsp">[退出]</a></span>
             </td>
-
         </tr>
         <tr>
             <td width="20%" class="tableleft">姓名</td>
@@ -126,7 +125,7 @@
         </tr>
         <tr>
             <td class="tableleft">出生日期</td>
-            <td><input type="password" name="password"/></td>
+            <td><input type="text" name="birthday"/></td>
         </tr>
         <tr>
             <td class="tableleft">性别</td>
@@ -137,11 +136,11 @@
         </tr>
         <tr>
             <td class="tableleft">身份证号码</td>
-            <td><input type="text" name="realname"/></td>
+            <td><input type="text" name="cardno"/></td>
         </tr>
         <tr>
             <td class="tableleft">联系方式</td>
-            <td><input type="text" name="realname"/></td>
+            <td><input type="text" name="phonenum"/></td>
         </tr>
         <tr>
             <td class="tableleft">邮箱</td>
@@ -186,7 +185,7 @@
         <tr>
             <td class="tableleft">考试时间</td>
             <td>
-                <select name=" ">
+                <select name="testTime" id="testTime">
                     <option>--请选择--</option>
                 </select>
 
@@ -194,7 +193,7 @@
         </tr>
         <tr>
             <td class="tableleft">上传照片</td>
-            <td><input type="file" name="email"/></td>
+            <td><input type="file" name="myFile"/></td>
         </tr>
 
 

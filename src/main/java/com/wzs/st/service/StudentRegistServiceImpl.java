@@ -19,13 +19,12 @@ import java.util.List;
  */
 public class StudentRegistServiceImpl implements StudentRegistService {
     @Override
-    public int stuRegist(String username, String pwd, String id) {
+    public int stuRegist(String username, String pwd) {
         StuUserInfoDao dao = new StuUserInfoDaoImpl();
         StuUserInfoEntity entity = new StuUserInfoEntity();
         entity.setStuUserName(username);
         entity.setStuPassword(pwd);
         entity.setRegDate(DateUtils.getCurrentTime());
-        entity.setStuId(id);
         int i = dao.insertStuUserInfo(entity);
         return i;
     }
@@ -38,24 +37,24 @@ public class StudentRegistServiceImpl implements StudentRegistService {
         entity.setStuPassword(password);
         StuUserInfoEntity entity1 = null;
         //因为数据库查询不能接受两个参数，所以需要向里面传一个实体（大概是因为Mybatits
-        List<StuUserInfoEntity> list=dao.selectStuByUsernamePwd(entity);
-        if(list!=null&&list.size()>0){
-            entity1=list.get(0);
+        List<StuUserInfoEntity> list = dao.selectStuByUsernamePwd(entity);
+        if (list != null && list.size() > 0) {
+            entity1 = list.get(0);
         }
         return entity1;
     }
 
     @Override
     public StuDetailInfEntity selectDetailInfById(String id) {
-        StuDetailInfDao dao=new StuDetailInfDaoImpl();
-        StuDetailInfEntity entity=dao.selectStuDetailInfById(id);
+        StuDetailInfDao dao = new StuDetailInfDaoImpl();
+        StuDetailInfEntity entity = dao.selectStuDetailInfById(id);
         return entity;
     }
 
     @Override
     public List<StuUserInfoEntity> selectStuByUsername(String username) {
-        StuUserInfoDao dao=new StuUserInfoDaoImpl();
-        List<StuUserInfoEntity> list=dao.selectStuByUsername(username);
+        StuUserInfoDao dao = new StuUserInfoDaoImpl();
+        List<StuUserInfoEntity> list = dao.selectStuByUsername(username);
         return list;
     }
 }

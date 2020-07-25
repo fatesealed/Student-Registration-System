@@ -18,7 +18,7 @@ public class test1 {
         System.out.println("+++");
         StuUserInfoEntity e = new StuUserInfoEntity();
         e.setStuUserName("lyx");
-        e.setStuId("543525");
+        e.setStuId("52424");
         e.setStuPassword("123456");
         e.setRegDate("2014-9-9");
         StuUserInfoDao dao = new StuUserInfoDaoImpl();

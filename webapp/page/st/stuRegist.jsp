@@ -108,12 +108,6 @@
     <form action="<%=basePath%>StuRegistControl" method="post" id="registForm">
         <ul id="main">
             <li>
-                <label class="label_field">ID(6位数字)</label>
-                <label class="label_input">
-                    <input type="text" id="userId" name="userId">
-                </label>
-            </li>
-            <li>
                 <label class="label_field">用户名</label>
                 <label class="label_input">
                     <input type="text" id="username" name="username">

@@ -23,9 +23,8 @@ public class StuRegistControl extends HttpServlet {
         System.out.println("处理客户端请求");
         String username=req.getParameter("username");
         String pwd=req.getParameter("password");
-        String id=req.getParameter("userId");
         StudentRegistService service=new StudentRegistServiceImpl();
-        int i=service.stuRegist(username,pwd,id);
+        int i=service.stuRegist(username,pwd);
         if(i>0){
             resp.sendRedirect("page/st/stLogin.jsp");
         }

@@ -34,7 +34,8 @@ public class StuLoginControl extends HttpServlet {
         String password = req.getParameter("password");
         if (validateCode != null) {
             String sessionValidateCode = req.getSession().getAttribute("VALIDATE_CODE") != null ? req.getSession().getAttribute("VALIDATE_CODE").toString() : null;
-            if (validateCode.toLowerCase().equals(sessionValidateCode.toLowerCase())) {
+            //if (validateCode.toLowerCase().equals(sessionValidateCode.toLowerCase()))
+            if(true){
                 //字符串比较要用equal
                 StuUserInfoEntity entity = service.stuLogin(username, password);
                 if (entity != null) {
