@@ -93,7 +93,7 @@
                         var opts = "<option value=''>--请选择--</option>";
                         for (var i = 0; i < res.length; i++) {
                             // alert(res[i].provinces+":"+res[i].city+":"+res[i].testPlace);
-                            var val = res[i].examIdX + ":" + res[i].province + ":" + res[i].city + ":" + res[i].examAdd;
+                            var val = res[i].examId + ":" + res[i].province + ":" + res[i].city + ":" + res[i].examAdd;
                             opts = opts + "<option value='" + val + "' addr='" + res[i].examAdd + "'>" + res[i].province + "-" + res[i].city + "</option>";//value=考试科目id，文本=考试等级
                             $("#addr").html(opts);
 
@@ -107,6 +107,34 @@
                 });
 
             });
+            //选择考试地点触发的动作
+            $("#addr").change(function () {
+                var addr = $(document.getElementById("addr").options[document.getElementById("addr").selectedIndex]).attr("addr");
+                //parent()寻找上一层元素，find表示过滤，找里面的元素
+                $(this).parent().find("span").html(addr);
+                var val = $(this).val();
+                //发送异步请求查询考试时间段列表
+                $.ajax({
+                    url: "<%=basePath%>ExamSubjectControl?action=selectExamBetweenTimes",
+                    data: {items: val},
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        var opts = "<option value=''>--请选择--</option>";
+                        for (var i = 0; i < res.length; i++) {
+                            //如果用:后面截取的时候会出问题
+                            var val = res[i].examId + "#" + res[i].examSDateTime + "#" + res[i].examEDateTime;
+                            opts = opts + "<option value='" + val + "'>" + res[i].examSDateTime + "-" + res[i].examEDateTime + "</option>"
+                            $("#testTime").html(opts);
+                        }
+                    },
+                    error: function () {
+                        alert("响应失败");
+                    }
+                })
+
+
+            })
         });
     </script>
 </head>

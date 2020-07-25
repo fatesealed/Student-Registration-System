@@ -61,6 +61,28 @@ public class ExamSubjectControl extends HttpServlet {
             out.print(jsonStr);
             out.close();
         }
+        //根据考试科目id 省份 城市 具体时间查询考试时间段列表
+        else if (action != null && action.equals("selectExamBetweenTimes")) {
+            String items = req.getParameter("items");
+            String[] itemsArray = items.split(":");
+            String examId = itemsArray[0];
+            String province = itemsArray[1];
+            String city = itemsArray[2];
+            String addr = itemsArray[3];
+            StudentExamService service = new StudentExamServiceImpl();
+            TestDetailEntity e = new TestDetailEntity();
+            e.setExamId(examId);
+            e.setProvince(province);
+            e.setCity(city);
+            e.setExamAdd(addr);
+            List<TestDetailEntity> list=service.selectExamcourseTime(e);
+            //把查询到的list转换为json字符串，异步相应客户端
+            String jsonStr=JsonUtils.listToJson(list);
+            System.out.println("JSON:"+jsonStr);
+            PrintWriter out=resp.getWriter();
+            out.print(jsonStr);
+            out.close();
+        }
     }
 
     @Override
