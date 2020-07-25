@@ -81,6 +81,7 @@
                 });
 
             });
+            //选择考试等级触发的动作
             $("#leval").change(function () {
                 var examId = $(this).val();//考试科目ID
                 $.ajax({
@@ -93,7 +94,7 @@
                         for (var i = 0; i < res.length; i++) {
                             // alert(res[i].provinces+":"+res[i].city+":"+res[i].testPlace);
                             var val = res[i].examIdX + ":" + res[i].province + ":" + res[i].city + ":" + res[i].examAdd;
-                            opts = opts + "<option value='" + val + "'>" + res[i].province + "-" + res[i].city + "-" + res[i].examAdd + "</option>";//value=考试科目id，文本=考试等级
+                            opts = opts + "<option value='" + val + "' addr='" + res[i].examAdd + "'>" + res[i].province + "-" + res[i].city + "</option>";//value=考试科目id，文本=考试等级
                             $("#addr").html(opts);
 
                         }
@@ -116,7 +117,8 @@
         <caption><h2>考生报名</h2></caption>
         <tr>
             <td width="20%" class="tableleft" colspan="2" style="text-align: right; font-size:13px;padding-right:50px;">
-                <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a href="page/st/stLogin.jsp">[退出]</a></span>
+                <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a
+                        href="page/st/stLogin.jsp">[退出]</a></span>
             </td>
         </tr>
         <tr>
@@ -179,7 +181,7 @@
                 <select name="addr" id="addr">
                     <option>--请选择--</option>
                 </select>
-
+                <span></span>
             </td>
         </tr>
         <tr>
