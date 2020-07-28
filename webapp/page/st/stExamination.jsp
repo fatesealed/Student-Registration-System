@@ -132,15 +132,14 @@
                         alert("响应失败");
                     }
                 })
-
-
             })
         });
     </script>
 </head>
 <body>
 
-<form action="index.html" method="post" class="definewidth m20">
+<form action="<%=basePath%>ExamSubjectControl?action=stExam" enctype="multipart/form-data" method="post"
+      class="definewidth m20">
     <table class="table table-bordered table-hover definewidth m10" style="width:50%;margin:0 auto;">
         <caption><h2>考生报名</h2></caption>
         <tr>

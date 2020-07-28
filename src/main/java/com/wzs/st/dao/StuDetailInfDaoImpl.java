@@ -29,4 +29,13 @@ public class StuDetailInfDaoImpl implements StuDetailInfDao {
         sqlSession.close();
         return entity;
     }
+
+    @Override
+    public int insertStuInf(StuDetailInfEntity entity) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        int i=sqlSession.insert("com.wzs.st.dao.StuDetailInfDaoImpl.insertStuInf",entity);
+        sqlSession.commit();
+        sqlSession.close();
+        return i;
+    }
 }

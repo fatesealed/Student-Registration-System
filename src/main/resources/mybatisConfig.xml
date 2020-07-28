@@ -26,6 +26,6 @@
         <mapper resource="mapper/stuDetailInfoMapper.xml"/>
         <mapper resource="mapper/testSubjectMapper.xml"/>
         <mapper resource="mapper/testDetailMapper.xml"/>
-        <mapper resource="mapper\subjectInformationMapper.xml"/>
+        <mapper resource="mapper/subjectInformationMapper.xml"/>
     </mappers>
 </configuration>

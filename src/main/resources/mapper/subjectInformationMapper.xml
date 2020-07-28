@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzs.st.dao.SubjectInformationDaoImpl">
+    <!--添加报考详细信息-->
+    <insert id="insertSubjectInformation" parameterType="com.wzs.st.entity.SubjectInformationEntity">
+          insert into appexaminfo(appID,stuID,examIdX,appDateTime,
+  verState,verDateTime,verCase) values(#{appID},#{stuID},#{examIdX},
+  #{appDateTime},#{verState},#{verDateTime},#{verCase})
+    </insert>
+</mapper>

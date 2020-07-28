@@ -5,7 +5,13 @@
 
     <select id="selectStuDetailInfById" parameterType="java.lang.String"
             resultType="com.wzs.st.entity.StuDetailInfEntity">
-    select stuUserId,stuId,stuName,stuSex,stuTel,stuBirth ,stuIdNum, stuEmail ,stuPicName,stuPicUrl
+    select stuId,stuName,stuSex,stuTel,stuBirth ,stuIdNum, stuEmail ,stuPicName,stuPicUrl
 from stubasicinfo where stuId=#{stuId}
   </select>
+    <!--插入学生详细信息-->
+    <insert id="insertStuInf" parameterType="com.wzs.st.entity.StuDetailInfEntity">
+        insert into stubasicinfo(
+        stuId,stuName,stuSex,stuTel,stuBirth,stuIdNum,stuEmail,stuPicName,stuPicUrl
+        )values(#{stuId},#{stuName},#{stuSex},#{stuTel},#{stuBirth},#{stuIdNum},#{stuEmail},#{stuPicName},#{stuPicUrl})
+    </insert>
 </mapper>

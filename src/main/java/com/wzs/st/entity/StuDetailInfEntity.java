@@ -7,7 +7,6 @@ package com.wzs.st.entity;
  * version: 1.0 <br>
  */
 public class StuDetailInfEntity {
-    String stuUserId;
     String stuId;
     String stuName;
     String stuSex;
@@ -17,14 +16,6 @@ public class StuDetailInfEntity {
     String stuEmail;
     String stuPicName;
     String stuPicUrl;
-
-    public String getStuUserId() {
-        return stuUserId;
-    }
-
-    public void setStuUserId(String stuUserId) {
-        this.stuUserId = stuUserId;
-    }
 
     public String getStuId() {
         return stuId;
