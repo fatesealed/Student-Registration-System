@@ -1,11 +1,9 @@
 package com.wzs.st.control;
 
+import com.wzs.comm.utils.DateUtils;
 import com.wzs.comm.utils.JsonUtils;
 import com.wzs.st.entity.*;
-import com.wzs.st.service.StudentExamService;
-import com.wzs.st.service.StudentExamServiceImpl;
-import com.wzs.st.service.StudentLoginService;
-import com.wzs.st.service.StudentLoginServiceImpl;
+import com.wzs.st.service.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -20,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * 定义一个action属性，要求每个走该servlet的请求都必须传递一个action属性，区分不同的请求
@@ -32,12 +30,13 @@ public class ExamSubjectControl extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("utf-8");//修改响应数据编码格式
-        StudentLoginService registService = new StudentLoginServiceImpl();
+        StudentRegistService registService = new StudentRegistServiceImpl();
+        StudentLoginService loginService = new StudentLoginServiceImpl();
         String action = req.getParameter("action");
         //查询报考科目等等级列表（根据科目名称）
         if (action != null && action.equals("selectExamNames")) {
             String examName = req.getParameter("examName");
-            List<TestSubjectEntity> levals = registService.selectLevalS(examName);
+            List<TestSubjectEntity> levals = loginService.selectLevalS(examName);
                 /*for(int i=0;i<levals.size();i++){
                     System.out.println(levals.get(i).getLeval());
                 }*/
@@ -140,11 +139,8 @@ public class ExamSubjectControl extends HttpServlet {
                             String subjectDetail = item.getString();
                             if (subjectDetail != null) {
                                 String detailId = subjectDetail.split("#")[0];
-                                String t1 = subjectDetail.split("#")[1];
-                                String t2 = subjectDetail.split("#")[2];
                                 subject.setExamIdX(detailId);
-                                subject.setAppDateTime(t1);
-                                subject.setVerDateTime(t2);
+                                subject.setAppDateTime(DateUtils.getCurrentTime());
                                 subject.setVerState("N");
                             }
                         }
@@ -184,6 +180,42 @@ public class ExamSubjectControl extends HttpServlet {
                 settingInput.close();
                 service.insertStuInfo(stu);
                 service.insertSubInfo(subject);
+            }
+            //查询个人信息以及报考信息列表
+            resp.sendRedirect("ExamSubjectControl?action=selectStuExamInfo");
+        }
+        //查询个人信息以及报考信息列表
+        else if (action != null && action.equals("selectStuExamInfo")) {
+            StudentExamService examService = new StudentExamServiceImpl();
+            //获取考生实体
+            StuUserInfoEntity user = (StuUserInfoEntity) req.getSession().getAttribute("user");
+            //考生登陆的id
+            String stuId = user.getStuId();
+            StudentRegistService service = new StudentRegistServiceImpl();
+            //查询消息实体
+            StuDetailInfEntity stuEntity = registService.selectDetailInfById(stuId);
+            req.setAttribute("stuInfo",stuEntity);
+            //查询报考信息列表
+            List<Map<String,Object>> examRows=examService.selectExamDetailList(stuId);
+            req.setAttribute("examRows",examRows);
+            //最后实现页面跳转
+            req.getRequestDispatcher("/page/st/stExaminationInfo.jsp").forward(req,resp);
+        }
+        //删除一条报考信息
+        else if(action!=null&&action.equals("resetExam")){
+            String appID=req.getParameter("appID");
+            StudentExamService examService=new StudentExamServiceImpl();
+            int i=examService.resetExamBySubjectId(appID);
+            if(i>0){
+                String jsonStr=JsonUtils.objectToJson("1");
+                PrintWriter out=resp.getWriter();
+                out.print(jsonStr);
+                out.close();
+            }else {
+                String jsonStr=JsonUtils.objectToJson("0");
+                PrintWriter out=resp.getWriter();
+                out.print(jsonStr);
+                out.close();
             }
         }
     }

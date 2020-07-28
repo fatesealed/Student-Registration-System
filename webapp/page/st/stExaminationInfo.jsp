@@ -1,24 +1,16 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/style.css" />
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
+    <%@include file="/page/common/include.jsp" %>
 
     <style type="text/css">
         body {
             padding-bottom: 40px;
         }
+
         .sidebar-nav {
             padding: 9px 0;
         }
@@ -34,16 +26,41 @@
 
 
     </style>
+    <script type="text/javascript">
+        //取消单场报名
+        function resetExam(appID) {
+            $.ajax({
+                url: "<%=basePath%>ExamSubjectControl?action=resetExam",
+                type: "post",
+                data: {appID: appID},
+                dataType: "json",
+                success: function (res) {
+                    if (res == "1") {
+                        //移除行
+                        $("#" + appID).remove();
+                        //重新将序号从1排列
+                        $("#examTable tr:not(:first)").each(function (index) {//找到的每一个元素，都执行该方法；即遍历每个元素
+                            $(this).find("td:first").html(index + 1);
+                        });
+                    }
+                    else {
+                        alert("操作失败")
+                    }
+                },error:function () {
+                    alert("系统相应失败")
+                }
+            })
+        }
+    </script>
 </head>
 <body>
-
 <form action="index.html" method="post" class="definewidth m20">
-
     <table class="table table-bordered table-hover definewidth m10" style="width:50%;margin:0 auto;">
         <caption><h2>考生个人信息</h2></caption>
         <tr>
             <td width="20%" class="tableleft" style="text-align: right; font-size:13px;padding-right:50px;" colspan="3">
-                <span style="float:right;">xx您已登录,&nbsp;&nbsp;<a href="#">[退出]</a></span>
+                <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a
+                        href="<%=basePath%>StudentExitControl">[退出]</a></span>
             </td>
 
 
@@ -51,112 +68,89 @@
         <tr>
 
             <td width="20%" class="tableleft">姓名</td>
-            <td>张三</td>
-            <td  rowspan="5" style="text-align: right;border:0px;padding:0px;margin:0px;" ><image style="border:solid 1px #dddddd; width:150px;height:160px;"  src="<%=basePath%>comm/images/logo_820.jpg"></image></td>
+            <td>${stuInfo.stuName}</td>
+            <td rowspan="5" style="text-align: right;border:0px;padding:0px;margin:0px;">
+                <image style="border:solid 1px #dddddd; width:150px;height:160px;"
+                       src="<%=imgPath%>/${stuInfo.stuPicUrl}/${stuInfo.stuPicName}"></image>
+            </td>
         </tr>
         <tr>
             <td class="tableleft">出生日期</td>
-            <td colspan="2">1999-10-10</td>
+            <td colspan="2">${stuInfo.stuBirth}</td>
         </tr>
         <tr>
             <td class="tableleft">性别</td>
             <td colspan="2">
-                <input type="radio" name="sex" value="1" checked/> 男
-                <input type="radio" name="sex" value="0"/> 女
+                <c:if test="${stuInfo.stuSex==1}">男</c:if>
+                <c:if test="${stuInfo.stuSex==0}">女</c:if>
             </td>
         </tr>
         <tr>
             <td class="tableleft">身份证号码</td>
-            <td colspan="2">23232323232323</td>
+            <td colspan="2">${stuInfo.stuIdNum}</td>
         </tr>
         <tr>
-        <td class="tableleft">联系方式</td>
-        <td colspan="2">15901051676</td>
-      </tr>
+            <td class="tableleft">联系方式</td>
+            <td colspan="2">${stuInfo.stuTel}</td>
+        </tr>
         <tr>
             <td class="tableleft">邮箱</td>
-            <td colspan="2">123123@123.com</td>
-        </tr>
-        <tr>
-            <td class="tableleft">考试科目</td>
-            <td colspan="2">
-                <select   name=" " >
-                    <option>Java 工程师认证</option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td class="tableleft">考试等级</td>
-            <td colspan="2">
-                <select   name=" " >
-                    <option>一级</option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td class="tableleft">报考地区</td>
-            <td colspan="2">
-                <select   name=" " >
-                    <option>北京</option>
-                </select>
-
-            </td>
-        </tr>
-        <tr>
-            <td class="tableleft">考试时间</td>
-            <td colspan="2">
-                <select   name=" " >
-                    <option>09:00-12:00</option>
-                </select>
-
-            </td>
+            <td colspan="2">${stuInfo.stuEmail}</td>
         </tr>
 
-
-        <%--<tr>
-
-            <td colspan="3" style="text-align: center">
-                <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;
-                <button type="submit" class="btn btn-primary" type="button">取消</button>
-            </td>
-        </tr>--%>
     </table>
     <!--报考记录-->
-    <table class="table table-bordered table-hover definewidth m10">
+    <a class="btn btn-default" href="<%=basePath%>ExamSubjectControl?action=loadExamPage">报考其他考试</a>
+    <table class="table table-bordered table-hover definewidth m10" id="examTable">
         <thead>
         <tr>
             <th>序号</th>
             <th>考试科目</th>
+            <th>考试级别</th>
             <th>考试地点</th>
             <th>考试时间</th>
-
-            <th>等级</th>
+            <th>报考时间</th>
             <th>状态</th>
-            <th>申请报考时间</th>
+            <th>原因</th>
+            <th>审核时间</th>
+            <th>操作</th>
+
 
         </tr>
         </thead>
-        <tr>
-            <td>1</td>
+        <c:forEach items="${examRows}" var="e" varStatus="a">
+            <tr id="${e.appID}">
+                    <%-- 这个count好像不是数据库里面的东西 大概是库里面自带的东西--%>
+                <td>${a.count}</td>
+                <td>${e.examName}</td>
+                <td>${e.examGrade}</td>
+                <td>${e.province}-${e.city}-${e.examAdd}</td>
+                <td>${e.examSDateTime}-${e.examEDateTime}</td>
+                <td>${e.appDateTime}</td>
+                <td>
+                    <c:if test="${e.verState=='F'}">审核未通过</c:if>
+                    <c:if test="${e.verState=='Y'}">已审核</c:if>
+                </td>
+                <td>${e.checkCause}</td>
+                <td>${e.checkTime}</td>
+                <td>
+                    <c:if test="${e.verState!='Y'}">
+                        <a class="btn btn-default" href="javascript:void(0)"
+                           onclick="resetExam('${e.appID}')">取消报名</a>
+                    </c:if>
 
-            <td>计算机等级考试</td>
-            <td>北京</td>
-            <td>2020-10-10 09:00-12:00</td>
-            <td>一级</td>
-            <td>待审核</td>
-            <td>2020-10-10 12:12:23</td>
+                </td>
+            </tr>
+        </c:forEach>
 
-        </tr>
     </table>
 </form>
 </body>
 </html>
 <script>
     $(function () {
-        $('#backid').click(function(){
-            window.location.href="index.html";
+        $('#backid').click(function () {
+            window.location.href = "index.html";
         });
 
     });

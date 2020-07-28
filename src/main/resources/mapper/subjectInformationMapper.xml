@@ -8,4 +8,8 @@
   verState,verDateTime,verCase) values(#{appID},#{stuID},#{examIdX},
   #{appDateTime},#{verState},#{verDateTime},#{verCase})
     </insert>
+    <!--根据subjectId删除报考信息-->
+    <delete id="deleteSubjectInformation" parameterType="String">
+    delete from appexaminfo where appID=#{appID}
+  </delete>
 </mapper>

@@ -47,7 +47,8 @@ public class StuLoginControl extends HttpServlet {
                     //不存在就去报考
                     StuDetailInfEntity stInfo = service.selectDetailInfById(entity.getStuId());
                     if (stInfo != null) {
-                        req.getRequestDispatcher("page/st/stExaminationInfo.jsp").forward(req, resp);
+                        //不为空就去查学生的信息
+                        resp.sendRedirect("ExamSubjectControl?action=selectStuExamInfo");
                     } else {
                         List<TestSubjectEntity> list=loginService.selectExamNames();
                         req.setAttribute("examNames",list);

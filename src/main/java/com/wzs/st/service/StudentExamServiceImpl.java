@@ -6,6 +6,7 @@ import com.wzs.st.entity.SubjectInformationEntity;
 import com.wzs.st.entity.TestDetailEntity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description: StudentExamServiceImpl <br>
@@ -37,8 +38,22 @@ public class StudentExamServiceImpl implements StudentExamService {
 
     @Override
     public int insertSubInfo(SubjectInformationEntity entity) {
-        SubjectInformationDao dao=new SubjectInformationDaoImpl();
-        int i=dao.insertSubjectInformation(entity);
+        SubjectInformationDao dao = new SubjectInformationDaoImpl();
+        int i = dao.insertSubjectInformation(entity);
+        return i;
+    }
+
+    @Override
+    public List<Map<String, Object>> selectExamDetailList(String stuId) {
+        StuDetailInfDao dao = new StuDetailInfDaoImpl();
+        List<Map<String, Object>> list = dao.selectExamDetailList(stuId);
+        return list;
+    }
+
+    @Override
+    public int resetExamBySubjectId(String subId) {
+        SubjectInformationDao dao = new SubjectInformationDaoImpl();
+        int i = dao.deleteSubjectInformation(subId);
         return i;
     }
 }

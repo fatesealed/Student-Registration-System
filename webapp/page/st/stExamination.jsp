@@ -1,22 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css"/>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/style.css"/>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
-
-
+    <%@include file="/page/common/include.jsp" %>
     <style type="text/css">
         body {
             padding-bottom: 40px;
@@ -94,7 +81,7 @@
                         for (var i = 0; i < res.length; i++) {
                             // alert(res[i].provinces+":"+res[i].city+":"+res[i].testPlace);
                             var val = res[i].examId + ":" + res[i].province + ":" + res[i].city + ":" + res[i].examAdd;
-                            opts = opts + "<option value='" + val + "' addr='" + res[i].examAdd + "'>" + res[i].province + "-" + res[i].city + "</option>";//value=考试科目id，文本=考试等级
+                            opts = opts + "<option value='" + val + "' addr='" + res[i].examAdd + "'>" + res[i].province + "-" + res[i].city  + "</option>";//value=考试科目id，文本=考试等级
                             $("#addr").html(opts);
 
                         }
@@ -133,104 +120,252 @@
                     }
                 })
             })
+            //使用bootstrap进行表单校验
+            $("#examForm").bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                }, fields: {
+                    username: {
+                        validators: {
+                            notEmpty: {
+                                message: '姓名不能为空'
+                            }/*, trigger: 'change'*/
+
+
+                        }
+                    },
+                    birthday: {
+                        validators: {
+                            notEmpty: {
+                                message: '生日不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    },
+                    cardno: {
+                        validators: {
+                            notEmpty: {
+                                message: '证件号码不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    },
+                    phonenum: {
+                        validators: {
+                            notEmpty: {
+                                message: '联系方式不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: '邮箱不能为空'
+                            },/*, trigger: 'change'*/
+                            regexp: {
+                                regexp: /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/,
+                                message: '邮箱格式错误'
+                            }
+                        }
+                    },
+                    examName: {
+                        validators: {
+                            notEmpty: {
+                                message: '考试科目不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    },
+                    leval: {
+                        validators: {
+                            notEmpty: {
+                                message: '考试等级不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    },
+                    addr: {
+                        validators: {
+                            notEmpty: {
+                                message: '考试地点不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    }, testTime: {
+                        validators: {
+                            notEmpty: {
+                                message: '考试时间不能为空'
+                            }/*, trigger: 'change'*/
+
+                        }
+                    }, myFile: {
+                        validators: {
+                            notEmpty: {
+                                message: '请上传照片'
+                            }/*, trigger: 'change'*/
+                            /*, regexp:{
+                                regexp:/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.((jpg)|(png))$/,
+                                message: '请上传png/jpg格式'
+                            }*/
+
+                        }
+                    }
+
+                }
+
+            })
+            //初始化校验
+            $("#examForm").bootstrapValidator('validate');
         });
     </script>
 </head>
 <body>
 
-<form action="<%=basePath%>ExamSubjectControl?action=stExam" enctype="multipart/form-data" method="post"
-      class="definewidth m20">
+<form id="examForm" action="<%=basePath%>ExamSubjectControl?action=stExam" enctype="multipart/form-data" method="post"
+      class="form-inline">
+
     <table class="table table-bordered table-hover definewidth m10" style="width:50%;margin:0 auto;">
         <caption><h2>考生报名</h2></caption>
         <tr>
-            <td width="20%" class="tableleft" colspan="2" style="text-align: right; font-size:13px;padding-right:50px;">
+            <td width="20%" class="tableleft" style="text-align: right; font-size:13px;padding-right:50px;">
                 <span style="float:right;">${user.stuUserName}您已登录,&nbsp;&nbsp;<a
-                        href="page/st/stLogin.jsp">[退出]</a></span>
+                        href="<%=basePath%>StudentExitControl">[退出]</a></span>
             </td>
+
         </tr>
         <tr>
-            <td width="20%" class="tableleft">姓名</td>
-            <td><input type="text" name="username"/></td>
-        </tr>
-        <tr>
-            <td class="tableleft">出生日期</td>
-            <td><input type="text" name="birthday"/></td>
-        </tr>
-        <tr>
-            <td class="tableleft">性别</td>
             <td>
-                <input type="radio" name="sex" value="1" checked/> 男
-                <input type="radio" name="sex" value="0"/> 女
+                <div class="formRow">
+                    <div class="form-group col-md-1">
+                        <label class="col-md-1">姓名</label>
+                        <input class="col-md-1" type="text" name="username" class="form-control"/>
+                    </div>
+
+                    <div class="form-group col-md-1">
+                        <label>生日</label>
+                        <input type="text" name="birthday" class="form-control"/>
+                    </div>
+                </div>
+
             </td>
+
         </tr>
+
         <tr>
-            <td class="tableleft">身份证号码</td>
-            <td><input type="text" name="cardno"/></td>
-        </tr>
-        <tr>
-            <td class="tableleft">联系方式</td>
-            <td><input type="text" name="phonenum"/></td>
-        </tr>
-        <tr>
-            <td class="tableleft">邮箱</td>
-            <td><input type="text" name="email"/></td>
-        </tr>
-        <tr>
-            <td class="tableleft">考试科目</td>
             <td>
-                <!--
-                 这里通过下拉列表选项变化时，发送一个异步请求，查询等级
-                 AJax 异步请求：通过JS  XMLHTTPRequest对象，通过客户端向服务器端异步交互数据的技术，实现页面局部刷新；
-                 一般不直接写原生js实现，而是通过jquery或者其他js框架实现；
-                -->
-                <select name="examName" id="examName">
-                    <option>--请选择--</option>
-                    <c:forEach items="${examNames}" var="row">
-                        <option value="${row.examName}">${row.examName}</option>
-                    </c:forEach>
+                <div class="formRow">
+                    <div class="form-group">
+                        <label>性别</label>
+                        男<input type="radio" name="sex" value="1" checked class="form-control"/>
+                        女<input type="radio" name="sex" value="0" class="form-control"/>
+                    </div>
 
-                </select>
+                    <div class="form-group">
+                        <label>身份证号码</label>
+                        <input type="text" name="cardno" class="form-control"/>
+                    </div>
+                </div>
 
             </td>
+
         </tr>
+
         <tr>
-            <td class="tableleft">考试等级</td>
+
             <td>
-                <select name="leval" id="leval">
-                    <option>--请选择--</option>
-                </select>
+                <div class="formRow">
+                    <div class="form-group">
+                        <label>联系方式</label>
+                        <input type="text" name="phonenum" class="form-control"/>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="text" name="email" class="form-control"/>
+                    </div>
+                </div>
 
             </td>
-        </tr>
+
         <tr>
-            <td class="tableleft">报考地区</td>
             <td>
-                <select name="addr" id="addr">
-                    <option>--请选择--</option>
-                </select>
-                <span></span>
+
+                <div class="formRow">
+                    <div class="form-group">
+                        <label>考试科目</label>
+                        <select name="examName" id="examName" class="form-control">
+                            <option value="">--请选择--</option>
+                            <c:forEach items="${examNames}" var="row">
+                                <option value="${row.examName}">${row.examName}</option>
+                            </c:forEach>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>考试等级</label>
+                        <select name="leval" id="leval" class="form-control">
+                            <option value="">--请选择--</option>
+                        </select>
+
+                    </div>
+                </div>
+
             </td>
+
         </tr>
+
         <tr>
-            <td class="tableleft">考试时间</td>
+
             <td>
-                <select name="testTime" id="testTime">
-                    <option>--请选择--</option>
-                </select>
+
+                <div class="formRow">
+                    <div class="form-group">
+                        <label>报考地区</label>
+                        <select name="addr" id="addr" class="form-control">
+                            <option value="">--请选择--</option>
+
+                        </select>
+                        <span></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>考试时间</label>
+                        <select name="testTime" id="testTime" class="form-control">
+                            <option value="">--请选择--</option>
+                        </select>
+
+                    </div>
+                </div>
 
             </td>
-        </tr>
-        <tr>
-            <td class="tableleft">上传照片</td>
-            <td><input type="file" name="myFile"/></td>
+
+
         </tr>
 
+        <tr>
+            <td>
+
+                <div class="formRow">
+                    <div class="form-group">
+                        <label>上传照片</label>
+                        <input type="file" name="myFile" class="form-control">
+                    </div>
+                </div>
+            </td>
+        </tr>
+
 
         <tr>
 
-            <td colspan="2" style="text-align: center">
-                <button type="submit" class="btn btn-primary" type="button">保存</button> &nbsp;&nbsp;
-                <button type="submit" class="btn btn-primary" type="button">取消</button>
+            <td style="text-align: center">
+                <button type="submit" class="btn btn-primary">保存</button> &nbsp;&nbsp;
+                <button type="reset" class="btn btn-primary" type="button">取消</button>
             </td>
         </tr>
     </table>

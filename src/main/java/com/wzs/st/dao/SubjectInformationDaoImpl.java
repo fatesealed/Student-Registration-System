@@ -27,7 +27,11 @@ public class SubjectInformationDaoImpl implements SubjectInformationDao {
     }
 
     @Override
-    public int deleteSubjectInformation(String subjectId) {
-        return 0;
+    public int deleteSubjectInformation(String subId) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        int i=sqlSession.delete("com.wzs.st.dao.SubjectInformationDaoImpl.deleteSubjectInformation",subId);
+        sqlSession.commit();
+        sqlSession.close();
+        return i;
     }
 }

@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 /**
  * description: StuDetailInfDaoImpl <br>
@@ -37,5 +39,13 @@ public class StuDetailInfDaoImpl implements StuDetailInfDao {
         sqlSession.commit();
         sqlSession.close();
         return i;
+    }
+
+    @Override
+    public List<Map<String, Object>> selectExamDetailList(String stuId) {
+        SqlSession sqlSession=sqlSessionFactory.openSession();
+        List<Map<String,Object>> list=sqlSession.selectList("com.wzs.st.dao.StuDetailInfDaoImpl.selectExamDetailList",stuId);
+        sqlSession.close();
+        return list;
     }
 }
