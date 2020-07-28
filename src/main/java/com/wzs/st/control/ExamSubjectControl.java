@@ -1,31 +1,30 @@
 package com.wzs.st.control;
 
 import com.wzs.comm.utils.JsonUtils;
-import com.wzs.st.entity.TestDetailEntity;
-import com.wzs.st.entity.TestSubjectEntity;
+import com.wzs.st.entity.*;
 import com.wzs.st.service.StudentExamService;
 import com.wzs.st.service.StudentExamServiceImpl;
 import com.wzs.st.service.StudentLoginService;
 import com.wzs.st.service.StudentLoginServiceImpl;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
 /**
- * @Author: zyg
- * @License: (C) Copyright 2005-2019, xxx Corporation Limited.
- * @Contact: ytzhaof@isoftstone.com
- * @Date: 2020/7/22 10:40
- * @Version: 1.0
- * @Description: 定义一个action属性，要求每个走该servlet的请求都必须传递一个action属性，区分不同的请求
- * <a href="ExamSubjectControl?action="selectExamNames>查询xxxA</a>
- * <a href="ExamSubjectControl?action="selectEvals>查询xxxB</a>
+ * 定义一个action属性，要求每个走该servlet的请求都必须传递一个action属性，区分不同的请求
  */
 @WebServlet("/ExamSubjectControl")
 public class ExamSubjectControl extends HttpServlet {
@@ -75,13 +74,117 @@ public class ExamSubjectControl extends HttpServlet {
             e.setProvince(province);
             e.setCity(city);
             e.setExamAdd(addr);
-            List<TestDetailEntity> list=service.selectExamcourseTime(e);
+            List<TestDetailEntity> list = service.selectExamcourseTime(e);
             //把查询到的list转换为json字符串，异步相应客户端
-            String jsonStr=JsonUtils.listToJson(list);
-            System.out.println("JSON:"+jsonStr);
-            PrintWriter out=resp.getWriter();
+            String jsonStr = JsonUtils.listToJson(list);
+            System.out.println("JSON:" + jsonStr);
+            PrintWriter out = resp.getWriter();
             out.print(jsonStr);
             out.close();
+        }
+        //考生报考信息提交
+        else if (action != null && action.equals("stExam")) {
+            StudentExamService service = new StudentExamServiceImpl();
+            //创建文件扫描工厂类
+            FileItemFactory factory = new DiskFileItemFactory();
+            //文件上传处理器
+            ServletFileUpload upload = new ServletFileUpload(factory);
+            //解析请求信息
+            List<FileItem> fileItemList = null;
+            try {
+                //获得信息
+                fileItemList = upload.parseRequest(req);
+            } catch (FileUploadException e) {
+                e.printStackTrace();
+            }
+            if (fileItemList != null && fileItemList.size() > 0) {
+                StuDetailInfEntity stu = new StuDetailInfEntity();
+                StuUserInfoEntity user = (StuUserInfoEntity) req.getSession().getAttribute("user");
+                //查询简单信息并且构造详细信息的Id
+                stu.setStuId(user.getStuId());
+                SubjectInformationEntity subject = new SubjectInformationEntity();
+                subject.setStuID(stu.getStuId());
+                //指示器
+                Iterator<FileItem> iterator = fileItemList.iterator();
+                InputStream settingInput = ExamSubjectControl.class.getClassLoader().getResourceAsStream("setting.properties");
+                Properties properties = new Properties();
+                properties.load(settingInput);
+                while (iterator.hasNext()) {
+                    FileItem item = iterator.next();
+                    //判断表单中数据是否是正常的表单数据，非文件数据
+                    if (item.isFormField()) {
+                        //获取页面Input的name属性值
+                        String fieldName = item.getFieldName();
+                        if (fieldName != null && fieldName.equals("username")) {
+                            String username = item.getString();
+                            username = new String(username.getBytes("iso-8859-1"), "utf-8");
+                            stu.setStuName(username);
+                        }
+                        if (fieldName != null && fieldName.equals("birthday")) {
+                            String birthday = item.getString();
+                            stu.setStuBirth(birthday);
+                        }
+                        if (fieldName != null && fieldName.equals("sex")) {
+                            String sex = item.getString();
+                            stu.setStuSex(sex);
+                        }
+                        if (fieldName != null && fieldName.equals("cardno")) {
+                            String cardno = item.getString();
+                            stu.setStuIdNum(cardno);
+                        }
+                        if (fieldName != null && fieldName.equals("phonenum")) {
+                            String phonenum = item.getString();
+                            stu.setStuTel(phonenum);
+                        }
+                        if (fieldName != null && fieldName.equals("testTime")) {
+                            String subjectDetail = item.getString();
+                            if (subjectDetail != null) {
+                                String detailId = subjectDetail.split("#")[0];
+                                String t1 = subjectDetail.split("#")[1];
+                                String t2 = subjectDetail.split("#")[2];
+                                subject.setExamIdX(detailId);
+                                subject.setAppDateTime(t1);
+                                subject.setVerDateTime(t2);
+                                subject.setVerState("N");
+                            }
+                        }
+                        if (fieldName != null && fieldName.equals("email")) {
+                            String email = item.getString();
+                            stu.setStuEmail(email);
+                        }
+                    } else {
+                        //图片了图片了
+                        InputStream input = item.getInputStream();
+                        //获取文件存储路径
+                        String pathStr = properties.getProperty("PHOTO_IMG_PATH");
+                        File filepath = new File(pathStr);
+                        if (!filepath.exists()) {
+                            //如果不存在 创建目录
+                            filepath.mkdirs();
+                        }
+                        String fileName = item.getName();//获取文件名
+                        String fileType = fileName.substring(fileName.lastIndexOf("."));
+                        stu.setStuPicName(stu.getStuId() + fileType);//封装文件名
+                        File file = new File(pathStr + "/" + stu.getStuId() + fileType);
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        //每次读取字节数据，存入该数组中
+                        byte[] i = new byte[1024 * 100];
+                        //每次读取字节的个数，即每次读取数据的长度
+                        int length = 0;
+                        //返回-1表示读完了
+                        while ((length = (input.read(i))) != -1) {
+                            outputStream.write(i, 0, length);
+                        }
+                        //关闭输入输出流
+                        outputStream.close();
+                        input.close();
+                    }
+                }
+                stu.setStuPicUrl(properties.getProperty("PHOTO_IMG_PATH"));
+                settingInput.close();
+                service.insertStuInfo(stu);
+                service.insertSubInfo(subject);
+            }
         }
     }
 
