@@ -130,6 +130,7 @@
                 <td>
                     <c:if test="${e.verState=='F'}">审核未通过</c:if>
                     <c:if test="${e.verState=='Y'}">已审核</c:if>
+                    <c:if test="${e.verState=='N'}">未审核</c:if>
                 </td>
                 <td>${e.checkCause}</td>
                 <td>${e.checkTime}</td>

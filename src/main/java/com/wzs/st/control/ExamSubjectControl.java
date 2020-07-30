@@ -37,9 +37,6 @@ public class ExamSubjectControl extends HttpServlet {
         if (action != null && action.equals("selectExamNames")) {
             String examName = req.getParameter("examName");
             List<TestSubjectEntity> levals = loginService.selectLevalS(examName);
-                /*for(int i=0;i<levals.size();i++){
-                    System.out.println(levals.get(i).getLeval());
-                }*/
             //将数据转为json格式字符串，异步响应客户端
             String jsonStr = JsonUtils.listToJson(levals);
             System.out.println("JSON:" + jsonStr);
@@ -194,29 +191,60 @@ public class ExamSubjectControl extends HttpServlet {
             StudentRegistService service = new StudentRegistServiceImpl();
             //查询消息实体
             StuDetailInfEntity stuEntity = registService.selectDetailInfById(stuId);
-            req.setAttribute("stuInfo",stuEntity);
+            req.setAttribute("stuInfo", stuEntity);
             //查询报考信息列表
-            List<Map<String,Object>> examRows=examService.selectExamDetailList(stuId);
-            req.setAttribute("examRows",examRows);
+            List<Map<String, Object>> examRows = examService.selectExamDetailList(stuId);
+            req.setAttribute("examRows", examRows);
             //最后实现页面跳转
-            req.getRequestDispatcher("/page/st/stExaminationInfo.jsp").forward(req,resp);
+            req.getRequestDispatcher("/page/st/stExaminationInfo.jsp").forward(req, resp);
         }
         //删除一条报考信息
-        else if(action!=null&&action.equals("resetExam")){
-            String appID=req.getParameter("appID");
-            StudentExamService examService=new StudentExamServiceImpl();
-            int i=examService.resetExamBySubjectId(appID);
-            if(i>0){
-                String jsonStr=JsonUtils.objectToJson("1");
-                PrintWriter out=resp.getWriter();
+        else if (action != null && action.equals("resetExam")) {
+            String appID = req.getParameter("appID");
+            StudentExamService examService = new StudentExamServiceImpl();
+            int i = examService.resetExamBySubjectId(appID);
+            if (i > 0) {
+                String jsonStr = JsonUtils.objectToJson("1");
+                PrintWriter out = resp.getWriter();
                 out.print(jsonStr);
                 out.close();
-            }else {
-                String jsonStr=JsonUtils.objectToJson("0");
-                PrintWriter out=resp.getWriter();
+            } else {
+                String jsonStr = JsonUtils.objectToJson("0");
+                PrintWriter out = resp.getWriter();
                 out.print(jsonStr);
                 out.close();
             }
+        }
+        //加载考试报名界面
+        else if (action != null && action.equals("loadExamPage")) {
+            List<TestSubjectEntity> list = loginService.selectExamNames();
+            //查询考试科目
+            req.setAttribute("examNames", list);
+            //查询报考个人信息以及报考信息列表
+            StuUserInfoEntity user = (StuUserInfoEntity) req.getSession().getAttribute("user");
+            //获取考生登陆的id
+            String stuId = user.getStuId();
+            StuDetailInfEntity stuDetailInfEntity = registService.selectDetailInfById(stuId);
+            req.setAttribute("stuInfo", stuDetailInfEntity);
+            req.getRequestDispatcher("/page/st/stExaminationAgain.jsp").forward(req, resp);
+        }
+        //报考其他科目
+        else if(action!=null&&action.equals("reApply")){
+            //这里学生信息就不用重新写了 只需要写报考的额外信息
+            StuUserInfoEntity user = (StuUserInfoEntity) req.getSession().getAttribute("user");
+            SubjectInformationEntity entity=new SubjectInformationEntity();
+            entity.setStuID(user.getStuId());
+            String subjectDetail = req.getParameter("testTime");
+            if (subjectDetail != null) {
+                String detailId = subjectDetail.split("#")[0];
+                entity.setExamIdX(detailId);
+                entity.setAppDateTime(DateUtils.getCurrentTime());
+                entity.setVerState("N");
+            }
+            StudentExamService service=new StudentExamServiceImpl();
+            service.insertSubInfo(entity);
+            //操作完之后刷新页面
+            resp.sendRedirect("ExamSubjectControl?action=selectStuExamInfo");
         }
     }
 
