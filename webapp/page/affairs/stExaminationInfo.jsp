@@ -1,21 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
+
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/style.css" />
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
-
-
+    <%@include file="/page/common/include.jsp" %>
 
     <style type="text/css">
         body {

@@ -147,7 +147,7 @@ $.fn = $.prototype = {
 	 * 读写HTML - (不支持文本框)
 	 * @param	{String}	内容
 	 */
-	html: function (content) {
+	/*html: function (content) {
 		var elem = this[0];
 		
 		if (content === undefined) return elem.innerHTML;
@@ -155,7 +155,7 @@ $.fn = $.prototype = {
 		elem.innerHTML = content;
 		
 		return this;
-	},
+	},*/
 	
 	/**
 	 * 移除节点

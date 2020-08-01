@@ -20,7 +20,6 @@ import java.io.IOException;
 public class StuRegistControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("处理客户端请求");
         String username=req.getParameter("username");
         String pwd=req.getParameter("password");
         StudentRegistService service=new StudentRegistServiceImpl();

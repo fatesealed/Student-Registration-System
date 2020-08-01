@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <%@include file="/page/common/include.jsp"%>
+    <%@include file="/page/common/include.jsp" %>
     <style type="text/css">
         body {
             padding-top: 40px;
@@ -70,14 +70,15 @@
 
     <form class="form-signin" method="post" id="loginForm" action="<%=basePath%>StuLoginControl">
         <h2 class="form-signin-heading">考生登录系统</h2>
-        <span  style="color:red" id="errorSpan"></span>
+        <span style="color:red" id="errorSpan"></span>
         <input type="text" id="username" name="username" class="input-block-level" placeholder="账号">
         <input type="password" id="password" name="password" class="input-block-level" placeholder="密码">
-        <input type="text"  id="validateCode" name="validateCode" class="input-medium" placeholder="验证码">
+        <input type="text" id="validateCode" name="validateCode" class="input-medium" placeholder="验证码">
         <image src="<%=basePath%>ValidateCodeControl" onclick="getNewValidateCode(this)"></image>
         <p>
-            <button class="btn btn-large btn-primary" type="button"  onclick="studentLogin()" >登录</button>
-            <a    class="btn btn-large btn-primary" href="<%=basePath%>page/st/stuRegist.jsp" >注册</a>
+            <button class="btn btn-large btn-primary" type="button" onclick="studentLogin()">登录</button>
+            <a class="btn btn-large btn-primary" href="<%=basePath%>page/st/stuRegist.jsp">注册</a>
+            <a class="btn btn-large btn-primary" href="<%=basePath%>page/affairs/affairsLogin.jsp">考务登陆</a>
         </p>
     </form>
 

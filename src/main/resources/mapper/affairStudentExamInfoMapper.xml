@@ -1,0 +1,66 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzs.affairs.dao.AffairsStudentExamInfoDaoImpl">
+    <resultMap id="resMap" type="java.util.HashMap">
+        <!--column对应列名或者列别名，property 区分大小写，对应属性或者map的key-->
+        <result column="stuId" property="stuId" javaType="java.lang.String"></result>
+        <result column="stuName" property="stuName" javaType="java.lang.String"></result>
+        <result column="examIdX" property="examIdX" javaType="java.lang.String"></result>
+        <result column="appID" property="appID" javaType="java.lang.String"></result>
+        <result column="examName" property="examName" javaType="java.lang.String"></result>
+        <result column="examGrade" property="examGrade" javaType="java.lang.String"></result>
+        <result column="province" property="province" javaType="java.lang.String"></result>
+        <result column="city" property="city" javaType="java.lang.String"></result>
+        <result column="examAdd" property="examAdd" javaType="java.lang.String"></result>
+        <result column="examSDateTime" property="examSDateTime" javaType="java.lang.String"></result>
+        <result column="examEDateTime" property="examEDateTime" javaType="java.lang.String"></result>
+        <result column="appDateTime" property="appDateTime" javaType="java.lang.String"></result>
+        <result column="verCase" property="verCase" javaType="java.lang.String"></result>
+        <result column="verDateTime" property="verDateTime" javaType="java.lang.String"></result>
+        <result column="verState" property="verState" javaType="java.lang.String"></result>
+    </resultMap>
+    <!--分页查询考生报考信息列表-->
+    <select id="selectAffirStuExamPageRows" resultMap="resMap" parameterType="com.wzs.comm.utils.PageUtils">
+SELECT
+	a.stuId,
+	stuName,
+	a.examIdX,
+	appID,
+	examName,
+	examGrade,
+	province,
+	city,
+	examAdd,
+	examSDateTime,
+	examEDateTime,
+	appDateTime,
+	verCase,
+	verDateTime,
+	verState
+FROM
+	appexaminfo AS a,
+	examdetails AS b,
+	exambase AS c,
+	stubasicinfo AS d
+WHERE
+	a.examIdX = b.examIdX
+	AND c.examId = b.examId
+	AND a.stuID = d.stuId
+	LIMIT #{offset},#{pageSize}
+    </select>
+    <!--分页查询考生报考信息列表-->
+    <select id="selectAffirStuExamTotal" resultType="java.lang.Integer" parameterType="com.wzs.comm.utils.PageUtils">
+SELECT
+	COUNT(*) total
+FROM
+	appexaminfo AS a,
+	examdetails AS b,
+	exambase AS c,
+	stubasicinfo AS d
+WHERE
+	a.examIdX = b.examIdX
+	AND c.examId = b.examId
+	AND a.stuID = d.stuId
+	</select>
+</mapper>

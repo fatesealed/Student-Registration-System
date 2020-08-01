@@ -1,0 +1,21 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzs.affairs.dao.AffairInfDaoImpl">
+    <!--一般指向当前mapper文件对应的接口实现类
+    多个mapper文件的namespace不能重复
+  -->
+    <!--
+    parameterType:表示将数据封装到那种类型对象中，传入当前sql语句
+    #{} 表达式，用于获取属性 里面写对象的属性名，区分大小写
+    id属性：与namespace 指定的类中的方法名一致，此时方法就会映射到该标签；同一个mapper文件中id属性不能重复
+    -->
+
+    <!--根据用户名和密码查询行记录-->
+    <select id="selectAffByUsernamePwd" resultType="com.wzs.affairs.entity.AffairEntity"
+            parameterType="com.wzs.affairs.entity.AffairEntity">
+     select teaId,teaUserName,teaPassword,teaDateTime
+    from teainfo where teaUserName=#{teaUserName} and teaPassword=#{teaPassword}
+  </select>
+    <!--根据密码查询行记录-->
+</mapper>

@@ -1,22 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/style.css" />
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
-
-
-
+    <%@include file="/page/common/include.jsp" %>
     <style type="text/css">
         body {
             padding-top: 40px;
@@ -57,13 +43,14 @@
 
 <div class="container">
 
-    <form class="form-signin" method="post" action="../index.html">
-        <h2 class="form-signin-heading">考生登录系统</h2>
+    <form class="form-signin" method="post" action="<%=basePath%>affairLoginControl.do">
+        <h2 class="form-signin-heading">考务登录系统</h2>
         <input type="text" name="username" class="input-block-level" placeholder="账号">
         <input type="password" name="password" class="input-block-level" placeholder="密码">
-        <input type="text" name="verify" class="input-medium" placeholder="验证码">
-
-        <p><button class="btn btn-large btn-primary" type="submit">登录</button></p>
+        <p>
+            <button class="btn btn-large btn-primary" type="submit">登录</button>
+            <a class="btn btn-large btn-primary" href="<%=basePath%>page/st/stLogin.jsp">考生登录</a>
+        </p>
     </form>
 
 </div>

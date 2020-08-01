@@ -11,7 +11,7 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <%
-    String imgPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()  + "/";
+    String imgPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/";
 %>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css"/>
@@ -21,6 +21,7 @@
 <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
 <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
 <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
+<script type="text/javascript" src="<%=basePath%>comm/Js/jquery.js"></script>
 <link rel="stylesheet" type="text/css"
       href="<%=basePath%>comm/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css">
 <script type="text/javascript"

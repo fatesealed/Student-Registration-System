@@ -1,29 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>comm/Css/style.css" />
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/jquery.sorted.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/bootstrap.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/ckform.js"></script>
-    <script type="text/javascript" src="<%=basePath%>comm/Js/common.js"></script>
-
-
+    <%@include file="/page/common/include.jsp" %>
 
     <style type="text/css">
         body {
             padding-bottom: 40px;
         }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
+
 
         @media (max-width: 980px) {
             /* Enable use of floated navbar text */
@@ -79,7 +64,7 @@
         <tr>
             <td class="tableleft">是否管理员</td>
             <td>
-                <select   name=" " >
+                <select name=" ">
                     <option>--请选择--</option>
                 </select>
 
@@ -99,8 +84,8 @@
 </html>
 <script>
     $(function () {
-        $('#backid').click(function(){
-            window.location.href="index.html";
+        $('#backid').click(function () {
+            window.location.href = "index.html";
         });
 
     });

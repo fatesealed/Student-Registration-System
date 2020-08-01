@@ -7,6 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @Author: zyg
+ * @License: (C) Copyright 2005-2019, xxx Corporation Limited.
+ * @Contact: ytzhaof@isoftstone.com
+ * @Date: 2020/7/28 10:15
+ * @Version: 1.0
+ * @Description:
+ */
 
 public class LoginFilter implements Filter {
     @Override
@@ -19,8 +27,11 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+
         String path = req.getRequestURI();//例如：   /ExamSubjectControl
         String requestURL = path.substring(path.lastIndexOf("/"));
+
+
         String staticFileType = null;
         if (requestURL.lastIndexOf(".") != -1) {
             staticFileType = requestURL.substring(requestURL.lastIndexOf("."));

@@ -27,5 +27,7 @@
         <mapper resource="mapper/testSubjectMapper.xml"/>
         <mapper resource="mapper/testDetailMapper.xml"/>
         <mapper resource="mapper/subjectInformationMapper.xml"/>
+        <mapper resource="mapper/affairStudentExamInfoMapper.xml"/>
+        <mapper resource="mapper/affairInfoMapper.xml"/>
     </mappers>
 </configuration>
